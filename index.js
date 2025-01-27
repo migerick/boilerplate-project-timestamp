@@ -24,7 +24,22 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get("/api/:date?", function(req, res) {
+  const { date } = req.params;
+  let inputDate;
 
+  // Check if the date parameter is provided, otherwise use current date
+  if (!date) {
+    inputDate = new Date();  // Empty date parameter, use the current date
+  } else {
+    // If the date is a number (Unix timestamp), convert it to Date object
+    if (!isNaN(date)) {
+      inputDate = new Date(parseInt(date));
+    } else {
+      // Otherwise try to parse the date string
+      inputDate = new Date(date);
+    }
+  }
 
 // Listen on port set in environment variable or default to 3000
 var listener = app.listen(process.env.PORT || 3000, function () {
